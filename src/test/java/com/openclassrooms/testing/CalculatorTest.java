@@ -6,32 +6,62 @@ import org.junit.jupiter.api.Test;
 
 public class CalculatorTest {
 
-	@Test
-	public void testAddTwoPositiveNumbers() {
-		// Arrange
-		int a = 2;
-		int b = 3;
-		Calculator calculator = new Calculator();
+    private Calculator calculatorUnderTest;
 
-		// Act
-		int somme = calculator.add(a, b);
+    private static Instant startedAt;
 
-		// Assert
-		assertEquals(5, somme);
-	}
+    @BeforeAll
+    public static void initStartingTime() {
+        System.out.println("Appel avant tous les tests");
+        startedAt = Instant.now();
+    }
 
-	@Test
-	public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
-		// Arrange
-		int a = 42;
-		int b = 11;
-		Calculator calculator = new Calculator();
+    @AfterAll
+    public static void showTestDuration() {
+        System.out.println("Appel après tous les tests");
+        Instant endedAt = Instant.now();
+        long duration = Duration.between(startedAt, endedAt).toMillis();
+        System.out.println(MessageFormat.format("Durée des tests : {0} ms"), duration));
+    }
 
-		// Act
-		int produit = calculator.multiply(a, b);
+    @BeforeEach
+    public void initCalculator() {
+        calculatorUnderTest = new Calculator();
+        System.out.println("Appel avant chaque test");
+    }
 
-		// Assert
-		assertEquals(462, produit);
-	}
+    @AfterEach
+    public void undefCalculator() {
+        System.out.println("Appel après chaque test");
+        calculatorUnderTest = null;
+    }
+
+    @Test
+    public void testAddTwoPositiveNumbers() {
+        // Arrange
+        int a = 2;
+        int b = 3;
+        Calculator calculator = new Calculator();
+
+        // Act
+        int somme = calculatorUnderTest.add(a, b);
+
+        // Assert
+        assertEquals(5, somme);
+    }
+
+    @Test
+    public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
+        // Arrange
+        int a = 42;
+        int b = 11;
+        Calculator calculator = new Calculator();
+
+        // Act
+        int produit = calculatorUnderTest.multiply(a, b);
+
+        // Assert
+        assertEquals(462, produit);
+    }
 
 }
